@@ -10,7 +10,6 @@ public class Player{
     
     public Player(){
         hand = new ArrayList<>();
-        allCards = new ArrayList<>();
     }
 
     public ArrayList<Card> getHand(){return hand;}
@@ -21,17 +20,53 @@ public class Player{
     }
 
     public String playHand(ArrayList<Card> communityCards){  
+        //setup
+        allCards = new ArrayList<>();
         for (int i = 0; i < communityCards.size(); i++) {
             allCards.add(communityCards.get(i));
         }    
         for (int i = 0; i < hand.size(); i++) {
             allCards.add(hand.get(i));
         }
+        sortAllCards();
+        ArrayList<Integer> rankFreq = findRankingFrequency();
+        ArrayList<Integer> suitFreq = findSuitFrequency();
+        
+        //royalflush
+        boolean isIn = true;
+        for (int i = rankFreq.size() - 1; i >= 9; i--) {
+            if (rankFreq.get(i) != 1) {
+                isIn = false;
+            }
+        }
+        if (isIn) {
+            for (int i = 0; i < suitFreq.size(); i++) {
+                if (suitFreq.get(i) == 5) {
+                    return "Royal Flush";
+                }
+            }
+        }
+        //straightflush
+        int count = 0;
+        for (int i = 0; i < rankFreq.size(); i++) {
+            if (rankFreq.get(i) == 1) {
+                count++;
+            } else if (count != 5) {
+                count = 0;
+            }
+        }
+        if (count == 5) {
+            for (int i = 0; i < suitFreq.size(); i++) {
+                if (suitFreq.get(i) == 5) {
+                    return "Straight Flush";
+                }
+            }
+        }
 
         return "Nothing";
     }
 
-    public void sortAllCards(){
+    public void sortAllCards(){ //
         for (int i = 0; i < allCards.size(); i++) {
             int j = i;
             while (j > 0 && Utility.getRankValue(allCards.get(j).getRank()) < Utility.getRankValue(allCards.get(j - 1).getRank())) {
@@ -57,7 +92,18 @@ public class Player{
     }
 
     public ArrayList<Integer> findSuitFrequency(){
-        return new ArrayList<>(); 
+        ArrayList<Integer> suitFreqArray = new ArrayList<Integer>();
+        for (int i = 0; i < suits.length; i++) {
+            suitFreqArray.add(0);
+        }
+        for (int i = 0; i < suits.length; i++) {
+            for (int j = 0; j < allCards.size(); j++) {
+                if (allCards.get(j).getSuit().equals(suits[i])) {
+                    suitFreqArray.set(i, suitFreqArray.get(i) + 1);
+                }
+            }
+        }
+        return suitFreqArray; 
     }
 
    
@@ -68,21 +114,20 @@ public class Player{
 
     public static void main(String[] args) {
         Player player = new Player();
-        player.addCard(new Card("3", "♠"));
-        player.addCard(new Card("5", "♣"));
+        player.addCard(new Card("10", "♠"));
+        player.addCard(new Card("J", "♠"));
         
-        // Add community cards (3 cards in total for this example)
+        // Community Cards
         ArrayList<Card> communityCards = new ArrayList<>();
-        communityCards.add(new Card("4", "♠"));
-        communityCards.add(new Card("8", "♣"));
-        communityCards.add(new Card("A", "♦"));
+        communityCards.add(new Card("Q", "♠"));
+        communityCards.add(new Card("K", "♠"));
+        communityCards.add(new Card("A", "♠"));
         
         player.playHand(communityCards);
-        
-        // Now the player should have 5 cards: 2 player cards + 3 community cards
-        player.sortAllCards();
-        System.out.println(player.getAllCards());
+        String handResult = player.playHand(communityCards);
         System.out.println(player.findRankingFrequency());
+        System.out.println(player.findSuitFrequency());
+        System.out.println(handResult);
     }
 
 }
