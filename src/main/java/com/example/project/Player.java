@@ -32,7 +32,7 @@ public class Player{
         ArrayList<Integer> rankFreq = findRankingFrequency();
         ArrayList<Integer> suitFreq = findSuitFrequency();
         
-        if (checkForRoyalFlush(rankFreq, suitFreq)) {
+        if (checkForRoyalFlush(rankFreq, suitFreq)) { //check what hand type it is
             return "Royal Flush";
         } else if (checkForStraightFlush(rankFreq, suitFreq)) {
             return "Straight Flush";
@@ -57,7 +57,7 @@ public class Player{
         return "Nothing";
     }
 
-    public boolean checkForHighCard(ArrayList<Integer> rank, ArrayList<Integer> suit, ArrayList<Card> commCards) {
+    public boolean checkForHighCard(ArrayList<Integer> rank, ArrayList<Integer> suit, ArrayList<Card> commCards) { //high card
         for (int i = rank.size() - 1; i >= 0; i--) {
             if (rank.get(i) == 1) {
                 for (int j = 0; j < commCards.size(); j++) {
@@ -71,7 +71,7 @@ public class Player{
         return false;
     }
 
-    public boolean checkForOnePair(ArrayList<Integer> rank, ArrayList<Integer> suit) {
+    public boolean checkForOnePair(ArrayList<Integer> rank, ArrayList<Integer> suit) {//pair
         for (int i = 0; i < rank.size(); i++) {
             if (rank.get(i) == 2) {
                 return true;
@@ -80,7 +80,7 @@ public class Player{
         return false;
     }
 
-    public boolean checkForTwoPairs(ArrayList<Integer> rank, ArrayList<Integer> suit) {
+    public boolean checkForTwoPairs(ArrayList<Integer> rank, ArrayList<Integer> suit) {//2 pair
         int count = 0;
         for (int i = 0; i < rank.size(); i++) {
             if (rank.get(i) == 2) {
@@ -93,7 +93,7 @@ public class Player{
         return false;
     }
 
-    public boolean checkForThreeOfAKind(ArrayList<Integer> rank, ArrayList<Integer> suit) {
+    public boolean checkForThreeOfAKind(ArrayList<Integer> rank, ArrayList<Integer> suit) {//3kind
         for (int i = 0; i < rank.size(); i++) {
             if (rank.get(i) == 3) {
                 return true;
@@ -102,7 +102,7 @@ public class Player{
         return false;
     }
 
-    public boolean checkForStraight(ArrayList<Integer> rank, ArrayList<Integer> suit) {
+    public boolean checkForStraight(ArrayList<Integer> rank, ArrayList<Integer> suit) {//straight
         int count = 0;
         for (int i = 0; i < rank.size(); i++) {
             if (rank.get(i) == 1) {
@@ -118,7 +118,7 @@ public class Player{
         return false;
     }
 
-    public boolean checkForFlush(ArrayList<Integer> rank, ArrayList<Integer> suit) {
+    public boolean checkForFlush(ArrayList<Integer> rank, ArrayList<Integer> suit) {//flush
         for (int i = 0; i < suit.size(); i++) {
             if (suit.get(i) == 5) {
                 return true;
@@ -127,14 +127,14 @@ public class Player{
         return false;
     }
 
-    public boolean checkForFullHouse(ArrayList<Integer> rank, ArrayList<Integer> suit) {
+    public boolean checkForFullHouse(ArrayList<Integer> rank, ArrayList<Integer> suit) {//fullhouse
         if (checkForThreeOfAKind(rank, suit) && checkForOnePair(rank, suit)) {
             return true;
         }
         return false;
     }
 
-    public boolean checkForFourOfAKind(ArrayList<Integer> rank, ArrayList<Integer> suit) {
+    public boolean checkForFourOfAKind(ArrayList<Integer> rank, ArrayList<Integer> suit) {//4kind
         for (int i = 0; i < rank.size(); i++) {
             if (rank.get(i) == 4) {
                 return true;
@@ -143,14 +143,14 @@ public class Player{
         return false;
     }
 
-    public boolean checkForStraightFlush(ArrayList<Integer> rank, ArrayList<Integer> suit) {
+    public boolean checkForStraightFlush(ArrayList<Integer> rank, ArrayList<Integer> suit) {//straightflush
         if (checkForStraight(rank, suit) && checkForFlush(rank, suit)) {
             return true;
         }
         return false;
     }
 
-    public boolean checkForRoyalFlush(ArrayList<Integer> rank, ArrayList<Integer> suit) {
+    public boolean checkForRoyalFlush(ArrayList<Integer> rank, ArrayList<Integer> suit) {//royalflush
         boolean isIn = true;
         for (int i = rank.size() - 1; i >= 9; i--) {
             if (rank.get(i) != 1) {
@@ -165,7 +165,7 @@ public class Player{
         return false;
     }
 
-    public void sortAllCards(){ //
+    public void sortAllCards(){ //sort cards
         for (int i = 0; i < allCards.size(); i++) {
             int j = i;
             while (j > 0 && Utility.getRankValue(allCards.get(j).getRank()) < Utility.getRankValue(allCards.get(j - 1).getRank())) {
@@ -175,7 +175,7 @@ public class Player{
         }
     } 
 
-    public ArrayList<Integer> findRankingFrequency(){
+    public ArrayList<Integer> findRankingFrequency(){//returns rank freq list
         ArrayList<Integer> rankFreqArray = new ArrayList<Integer>();
         for (int i = 0; i < ranks.length; i++) {
             rankFreqArray.add(0);
@@ -190,7 +190,7 @@ public class Player{
         return rankFreqArray; 
     }
 
-    public ArrayList<Integer> findSuitFrequency(){
+    public ArrayList<Integer> findSuitFrequency(){//returns suit freq list
         ArrayList<Integer> suitFreqArray = new ArrayList<Integer>();
         for (int i = 0; i < suits.length; i++) {
             suitFreqArray.add(0);

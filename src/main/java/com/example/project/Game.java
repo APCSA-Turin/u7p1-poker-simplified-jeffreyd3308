@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 
 public class Game{
-    public static String determineWinner(Player p1, Player p2,String p1Hand, String p2Hand,ArrayList<Card> communityCards){
+    public static String determineWinner(Player p1, Player p2,String p1Hand, String p2Hand,ArrayList<Card> communityCards){ //find winner
         if (Utility.getHandRanking(p1.playHand(communityCards)) > Utility.getHandRanking(p2.playHand(communityCards))) {
             return "Player 1 wins!";
         } else if (Utility.getHandRanking(p2.playHand(communityCards)) > Utility.getHandRanking(p1.playHand(communityCards))) {
@@ -14,6 +14,7 @@ public class Game{
         }
     }
 
+    //method used to find the highest card
     public static int checkHighest(Player player, int amount) {
         int highest = 0;
         for (int i = 0; i < player.findRankingFrequency().size(); i++) {
